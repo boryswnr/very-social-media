@@ -12,8 +12,6 @@ import debounce from "lodash.debounce";
 
 export default function EnterPage() {
     const { user, username } = useContext(UserContext);
-    console.log("user", user);
-    console.log("username", username);
 
     return (
         <main>
@@ -21,7 +19,10 @@ export default function EnterPage() {
                 !username ? (
                     <UsernameForm />
                 ) : (
-                    <SignOutButton />
+                    <>
+                        <h2>Hello {username}!</h2>
+                        <SignOutButton />
+                    </>
                 )
             ) : (
                 <SignInButton />
@@ -43,7 +44,7 @@ function SignInButton() {
 }
 
 function SignOutButton() {
-    return <button onClick={() => auth.signOut}>Sign Out</button>;
+    return <button onClick={() => auth.signOut()}>Sign Out</button>;
 }
 
 function UsernameForm() {
