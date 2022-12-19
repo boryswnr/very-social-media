@@ -6,16 +6,18 @@ export default function PostFeed({
     admin = false,
 }: {
     posts: any[];
-    admin: boolean;
+    admin?: boolean;
 }) {
-    return posts
-        ? posts.map((post) => (
-              <PostItem post={post} key={post.slug} admin={admin} />
-          ))
-        : null;
+    return posts ? (
+        posts.map((post) => (
+            <PostItem post={post} key={post.slug} admin={admin} />
+        ))
+    ) : (
+        <></>
+    );
 }
 
-function PostItem({ post, admin }) {
+function PostItem({ post, admin = false }) {
     const wordCount = post?.content.trim().split(/\s+/g).length;
     const minutesToRead = (wordCount / 100 + 1).toFixed(0);
 

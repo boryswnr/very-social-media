@@ -9,29 +9,31 @@ import Loader from "../components/Loader";
 
 const LIMIT = 1;
 
-export const fetchCache = "no-store";
-
-async function getPosts() {
+export async function getServerSideProps(context) {
     const postsQuery = firestore
         .collectionGroup("posts")
         .where("published", "==", true)
-        .orderBy("craetedAt", "desc")
+        .orderBy("createdAt", "desc")
         .limit(LIMIT);
 
     const posts = (await postsQuery.get()).docs.map(postToJSON);
+    console.log("posts in function", posts);
 
-    return posts;
+    return {
+        props: { posts },
+    };
 }
 
-export default function Home() {
-    const props = getPosts();
-    const [posts, setPosts] = useState(props);
+export default function Home(props) {
+    const [posts, setPosts] = useState(props.posts);
     const [loading, setLoading] = useState(false);
     const [postsEnd, setPostsEnd] = useState(false);
 
     const getMorePosts = async () => {
         setLoading(true);
         const last = posts[posts.length - 1];
+        console.log("posts", posts);
+        console.log("last", last);
 
         const cursor =
             typeof last.createdAt === "number"
