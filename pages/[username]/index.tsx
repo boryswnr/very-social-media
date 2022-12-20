@@ -1,23 +1,45 @@
+import {
+    query,
+    collection,
+    getDocs,
+    getFirestore,
+    limit,
+    orderBy,
+    where,
+} from "firebase/firestore";
 import PostFeed from "../../components/PostFeed";
 import UserProfile from "../../components/UserProfile";
 import { getUserWithUsername, postToJSON } from "../../lib/firebase";
 
-export async function getServerSideProps({ query }) {
-    const { username } = query;
+export async function getServerSideProps({ query: urlQuery }) {
+    const { username } = urlQuery;
+    console.log("username:", username);
 
     const userDoc = await getUserWithUsername(username);
+
     let user: object = {};
     let posts: any[] = [];
 
     if (userDoc) {
-        user = userDoc.data();
-        const postsQuery = userDoc.ref
-            .collection("posts")
-            .where("published", "==", true)
-            .orderBy("createdAt", "desc")
-            .limit(5);
+        console.log("true");
 
-        posts = (await postsQuery.get()).docs.map(postToJSON);
+        user = userDoc.data();
+
+        // const postsQuery = userDoc.ref
+        //     .collection("posts")
+        //     .where("published", "==", true)
+        //     .orderBy("createdAt", "desc")
+        //     .limit(5);
+
+        const postsQuery = query(
+            collection(getFirestore(), userDoc.ref.path, "posts"),
+            where("published", "==", true),
+            orderBy("createdAt", "desc"),
+            limit(5)
+        );
+
+        posts = (await getDocs(postsQuery)).docs.map(postToJSON);
+        console.log("posts in users page", posts);
     }
 
     return {

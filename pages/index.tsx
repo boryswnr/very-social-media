@@ -3,6 +3,17 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import toast from "react-hot-toast";
 import { firestore, fromMillis, postToJSON } from "../lib/firebase";
+import {
+    Timestamp,
+    query,
+    where,
+    orderBy,
+    limit,
+    collectionGroup,
+    getDocs,
+    startAfter,
+    getFirestore,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import PostFeed from "../components/PostFeed";
 import Loader from "../components/Loader";
@@ -10,13 +21,20 @@ import Loader from "../components/Loader";
 const LIMIT = 1;
 
 export async function getServerSideProps(context) {
-    const postsQuery = firestore
-        .collectionGroup("posts")
-        .where("published", "==", true)
-        .orderBy("createdAt", "desc")
-        .limit(LIMIT);
+    // const postsQuery = firestore
+    //     .collectionGroup("posts")
+    //     .where("published", "==", true)
+    //     .orderBy("createdAt", "desc")
+    //     .limit(LIMIT);
+    const ref = collectionGroup(getFirestore(), "posts");
+    const postsQuery = query(
+        ref,
+        where("published", "==", true),
+        orderBy("createdAt", "desc"),
+        limit(LIMIT)
+    );
 
-    const posts = (await postsQuery.get()).docs.map(postToJSON);
+    const posts = (await getDocs(postsQuery)).docs.map(postToJSON);
     console.log("posts in function", posts);
 
     return {
@@ -37,19 +55,31 @@ export default function Home(props) {
 
         const cursor =
             typeof last.createdAt === "number"
-                ? fromMillis(last.CreatedAt)
+                ? Timestamp.fromMillis(last.createdAt)
                 : last.createdAt;
 
-        const query = firestore
-            .collectionGroup("posts")
-            .where("published", "==", true)
-            .orderBy("createdAt", "desc")
-            .startAfter(cursor)
-            .limit(LIMIT);
+        console.log("cursor:", cursor);
 
-        const newPosts = (await query.get()).docs.map((doc) => doc.data());
+        // const query = firestore
+        //     .collectionGroup("posts")
+        //     .where("published", "==", true)
+        //     .orderBy("createdAt", "desc")
+        //     .startAfter(cursor)
+        //     .limit(LIMIT);
+
+        const ref = collectionGroup(getFirestore(), "posts");
+        const postsQuery = query(
+            ref,
+            where("published", "==", true),
+            orderBy("createdAt", "desc"),
+            startAfter(cursor),
+            limit(LIMIT)
+        );
+
+        const newPosts = (await getDocs(postsQuery)).docs.map((doc) => doc.data());
 
         setPosts(posts.concat(newPosts));
+        setLoading(false);
 
         if (newPosts.length < LIMIT) {
             setPostsEnd(true);

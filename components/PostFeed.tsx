@@ -9,9 +9,11 @@ export default function PostFeed({
     admin?: boolean;
 }) {
     return posts ? (
-        posts.map((post) => (
-            <PostItem post={post} key={post.slug} admin={admin} />
-        ))
+        <>
+            {posts.map((post) => (
+                <PostItem post={post} key={post.slug} admin={admin} />
+            ))}
+        </>
     ) : (
         <></>
     );
@@ -35,7 +37,7 @@ function PostItem({ post, admin = false }) {
                 <span>
                     {wordCount} words. {minutesToRead} min read
                 </span>
-                <span>💕❤💖 {post.heartCount} Hearts</span>
+                <span>💖 {post.heartCount} Hearts</span>
             </footer>
         </div>
     );
