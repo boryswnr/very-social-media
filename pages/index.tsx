@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import toast from "react-hot-toast";
-import { firestore, fromMillis, postToJSON } from "../lib/firebase";
+import { firestore, postToJSON } from "../lib/firebase";
 import {
     Timestamp,
     query,
@@ -21,11 +21,6 @@ import Loader from "../components/Loader";
 const LIMIT = 1;
 
 export async function getServerSideProps(context) {
-    // const postsQuery = firestore
-    //     .collectionGroup("posts")
-    //     .where("published", "==", true)
-    //     .orderBy("createdAt", "desc")
-    //     .limit(LIMIT);
     const ref = collectionGroup(getFirestore(), "posts");
     const postsQuery = query(
         ref,
@@ -60,13 +55,6 @@ export default function Home(props) {
 
         console.log("cursor:", cursor);
 
-        // const query = firestore
-        //     .collectionGroup("posts")
-        //     .where("published", "==", true)
-        //     .orderBy("createdAt", "desc")
-        //     .startAfter(cursor)
-        //     .limit(LIMIT);
-
         const ref = collectionGroup(getFirestore(), "posts");
         const postsQuery = query(
             ref,
@@ -76,7 +64,9 @@ export default function Home(props) {
             limit(LIMIT)
         );
 
-        const newPosts = (await getDocs(postsQuery)).docs.map((doc) => doc.data());
+        const newPosts = (await getDocs(postsQuery)).docs.map((doc) =>
+            doc.data()
+        );
 
         setPosts(posts.concat(newPosts));
         setLoading(false);

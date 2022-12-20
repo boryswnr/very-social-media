@@ -25,12 +25,6 @@ export async function getServerSideProps({ query: urlQuery }) {
 
         user = userDoc.data();
 
-        // const postsQuery = userDoc.ref
-        //     .collection("posts")
-        //     .where("published", "==", true)
-        //     .orderBy("createdAt", "desc")
-        //     .limit(5);
-
         const postsQuery = query(
             collection(getFirestore(), userDoc.ref.path, "posts"),
             where("published", "==", true),

@@ -11,7 +11,6 @@ export function useUserData() {
         let unsubscribe;
 
         if (user) {
-            // const ref = firestore.collection("users").doc(user.uid);
             const ref = doc(getFirestore(), "users", user.uid);
             unsubscribe = onSnapshot(ref, (doc) => {
                 setUsername(doc.data()?.username);
