@@ -30,7 +30,6 @@ export async function getServerSideProps(context) {
     );
 
     const posts = (await getDocs(postsQuery)).docs.map(postToJSON);
-    console.log("posts in function", posts);
 
     return {
         props: { posts },
@@ -45,15 +44,11 @@ export default function Home(props) {
     const getMorePosts = async () => {
         setLoading(true);
         const last = posts[posts.length - 1];
-        console.log("posts", posts);
-        console.log("last", last);
 
         const cursor =
             typeof last.createdAt === "number"
                 ? Timestamp.fromMillis(last.createdAt)
                 : last.createdAt;
-
-        console.log("cursor:", cursor);
 
         const ref = collectionGroup(getFirestore(), "posts");
         const postsQuery = query(

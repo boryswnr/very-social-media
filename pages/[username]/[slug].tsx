@@ -1,4 +1,4 @@
-import styles from "@styles/Post.module.css";
+import styles from "../../styles/Post.module.css";
 import {
     collectionGroup,
     doc,

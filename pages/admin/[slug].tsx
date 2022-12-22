@@ -37,7 +37,6 @@ function PostManager() {
         slug as string
     );
     const [post] = useDocumentDataOnce(postRef);
-    console.log(post);
 
     return (
         <main className={styles.container}>

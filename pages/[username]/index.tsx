@@ -13,7 +13,6 @@ import { getUserWithUsername, postToJSON } from "../../lib/firebase";
 
 export async function getServerSideProps({ query: urlQuery }) {
     const { username } = urlQuery;
-    console.log("username:", username);
 
     const userDoc = await getUserWithUsername(username);
 
@@ -21,8 +20,6 @@ export async function getServerSideProps({ query: urlQuery }) {
     let posts: any[] = [];
 
     if (userDoc) {
-        console.log("true");
-
         user = userDoc.data();
 
         const postsQuery = query(
@@ -33,7 +30,6 @@ export async function getServerSideProps({ query: urlQuery }) {
         );
 
         posts = (await getDocs(postsQuery)).docs.map(postToJSON);
-        console.log("posts in users page", posts);
     }
 
     return {
