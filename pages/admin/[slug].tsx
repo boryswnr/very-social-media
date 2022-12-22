@@ -6,7 +6,7 @@ import {
 } from "firebase/firestore";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import {
     useDocumentData,
     useDocumentDataOnce,
@@ -74,7 +74,14 @@ function PostManager() {
 }
 
 function PostForm({ defaultValues, postRef, preview }) {
-    const { register, handleSubmit, reset, watch } = useForm({
+    const {
+        register,
+        handleSubmit,
+        reset,
+        watch,
+        formState: { errors },
+        setError,
+    } = useForm({
         defaultValues,
         mode: "onChange",
     });
@@ -100,7 +107,27 @@ function PostForm({ defaultValues, postRef, preview }) {
             )}
 
             <div className={preview ? styles.hidden : styles.controls}>
-                <textarea {...register("content")}></textarea>
+                <textarea
+                    {...register("content", {
+                        minLength: {
+                            value: 10,
+                            message: "content is too short",
+                        },
+                        maxLength: {
+                            value: 20000,
+                            message: "content is too long",
+                        },
+                        required: {
+                            value: true,
+                            message: "content is required",
+                        },
+                    })}
+                ></textarea>
+                {errors.content && (
+                    <p className="text-danger">
+                        {errors.content.message as ReactNode}
+                    </p>
+                )}
                 <fieldset>
                     <input
                         className={styles.checkbox}
@@ -110,7 +137,11 @@ function PostForm({ defaultValues, postRef, preview }) {
                     <label>Published</label>
                 </fieldset>
 
-                <button className="btn-green" type="submit">
+                <button
+                    className="btn-green"
+                    type="submit"
+                    disabled={errors.content ? true : false}
+                >
                     Save Changes
                 </button>
             </div>
