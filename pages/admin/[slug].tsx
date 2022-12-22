@@ -4,9 +4,13 @@ import {
     serverTimestamp,
     updateDoc,
 } from "firebase/firestore";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
+import {
+    useDocumentData,
+    useDocumentDataOnce,
+} from "react-firebase-hooks/firestore";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -36,7 +40,8 @@ function PostManager() {
         "posts",
         slug as string
     );
-    const [post] = useDocumentDataOnce(postRef);
+    const [post] = useDocumentData(postRef);
+    console.log(post);
 
     return (
         <main className={styles.container}>
@@ -52,7 +57,16 @@ function PostManager() {
                             preview={preview}
                         />
                     </section>
-                    <aside></aside>
+
+                    <aside>
+                        <h3>Tools</h3>
+                        <button onClick={() => setPreview(!preview)}>
+                            {preview ? "Edit" : "Preview"}
+                        </button>
+                        <Link href={`/${post.username}/${post.slug}`}>
+                            <button className="btn-blue">Live view</button>
+                        </Link>
+                    </aside>
                 </>
             )}
         </main>
@@ -86,13 +100,12 @@ function PostForm({ defaultValues, postRef, preview }) {
             )}
 
             <div className={preview ? styles.hidden : styles.controls}>
-                <textarea name="content" {...register}></textarea>
+                <textarea {...register("content")}></textarea>
                 <fieldset>
                     <input
                         className={styles.checkbox}
-                        name="published"
                         type="checkbox"
-                        {...register}
+                        {...register("published")}
                     />
                     <label>Published</label>
                 </fieldset>
