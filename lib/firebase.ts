@@ -58,3 +58,6 @@ export function postToJSON(doc) {
         updatedAt: data?.updatedAt.toMillis() || 0,
     };
 }
+
+export const storage = getStorage(firebaseApp);
+export const STATE_CHANGED = "state_changed";

@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import AuthCheck from "../../components/AuthCheck";
+import ImageUploader from "../../components/ImageUploader";
 import { auth } from "../../lib/firebase";
 import styles from "../../styles/Admin.module.css";
 
@@ -107,6 +108,8 @@ function PostForm({ defaultValues, postRef, preview }) {
             )}
 
             <div className={preview ? styles.hidden : styles.controls}>
+                <ImageUploader />
+
                 <textarea
                     {...register("content", {
                         minLength: {
