@@ -13,7 +13,7 @@ export default function ImageUploader() {
     const [downloadURL, setDownloadURL] = useState("");
 
     const uploadFile = async (e) => {
-        const file = Array.from(e.target.files)[0];
+        const file = Array.from(e.target.files)[0] as Blob;
         const extension = file.type.split("/")[1];
         const fileRef = ref(
             storage,
