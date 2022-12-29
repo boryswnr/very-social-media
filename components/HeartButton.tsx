@@ -9,6 +9,7 @@ export default function Heart({ postRef }) {
         "hearts",
         auth.currentUser.uid
     );
+
     const [heartDoc] = useDocument(heartRef);
 
     const addHeart = async () => {
@@ -30,10 +31,7 @@ export default function Heart({ postRef }) {
         await batch.commit();
     };
 
-    console.log(typeof heartDoc);
-    console.log(heartDoc);
-
-    return heartDoc?.exists ? (
+    return heartDoc?.exists() ? (
         <button onClick={removeHeart}>💔 Unheart</button>
     ) : (
         <button onClick={addHeart}>💖 Heart</button>
