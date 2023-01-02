@@ -19,6 +19,7 @@ import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import AuthCheck from "../../components/AuthCheck";
 import ImageUploader from "../../components/ImageUploader";
 import Loader from "../../components/Loader";
+import { Overlay } from "../../components/Overlay";
 import { auth } from "../../lib/firebase";
 import styles from "../../styles/Admin.module.css";
 
@@ -61,6 +62,20 @@ function PostManager() {
 
     return (
         <main className={styles.container}>
+            {getConfirmation && (
+                <Overlay>
+                    <p>Are you sure you want to delete this post?</p>
+                    <button className="btn-blue" onClick={() => deletePost()}>
+                        Yes, delete it.
+                    </button>
+                    <button
+                        className="btn-red"
+                        onClick={() => setGetConfirmation(false)}
+                    >
+                        No, I changed my mind.
+                    </button>
+                </Overlay>
+            )}
             {post && (
                 <>
                     <section>
@@ -87,7 +102,7 @@ function PostManager() {
                             Live view
                         </button>
                         <button
-                            onClick={() => deletePost()}
+                            onClick={() => setGetConfirmation(true)}
                             className="btn-red"
                         >
                             Delete post
