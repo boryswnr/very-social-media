@@ -1,5 +1,7 @@
 import {
+    deleteDoc,
     doc,
+    DocumentData,
     getFirestore,
     serverTimestamp,
     updateDoc,
@@ -16,6 +18,7 @@ import toast from "react-hot-toast";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import AuthCheck from "../../components/AuthCheck";
 import ImageUploader from "../../components/ImageUploader";
+import Loader from "../../components/Loader";
 import { auth } from "../../lib/firebase";
 import styles from "../../styles/Admin.module.css";
 
@@ -31,6 +34,8 @@ export default function AdminPostEdit({}) {
 
 function PostManager() {
     const [preview, setPreview] = useState(false);
+    const [getConfirmation, setGetConfirmation] = useState(false);
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
     const { slug } = router.query;
 
@@ -42,13 +47,24 @@ function PostManager() {
         slug as string
     );
     const [post] = useDocumentData(postRef);
-    console.log(post);
+
+    const deletePost = async () => {
+        await deleteDoc(postRef);
+        router.push("/admin");
+        toast.error("Post deleted");
+    };
+
+    const liveView = (post: DocumentData) => {
+        setLoading(true);
+        router.push(`/${post.username}/${post.slug}`);
+    };
 
     return (
         <main className={styles.container}>
             {post && (
                 <>
                     <section>
+                        <Loader show={loading} />
                         <h1>{post.title}</h1>
                         <p>ID: {post.slug}</p>
 
@@ -64,9 +80,18 @@ function PostManager() {
                         <button onClick={() => setPreview(!preview)}>
                             {preview ? "Edit" : "Preview"}
                         </button>
-                        <Link href={`/${post.username}/${post.slug}`}>
-                            <button className="btn-blue">Live view</button>
-                        </Link>
+                        <button
+                            onClick={() => liveView(post)}
+                            className="btn-blue"
+                        >
+                            Live view
+                        </button>
+                        <button
+                            onClick={() => deletePost()}
+                            className="btn-red"
+                        >
+                            Delete post
+                        </button>
                     </aside>
                 </>
             )}
