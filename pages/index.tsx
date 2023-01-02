@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import PostFeed from "../components/PostFeed";
 import Loader from "../components/Loader";
 
-const LIMIT = 1;
+const LIMIT = 10;
 
 export async function getServerSideProps(context) {
     const ref = collectionGroup(getFirestore(), "posts");
