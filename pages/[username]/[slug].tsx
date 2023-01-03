@@ -14,6 +14,7 @@ import PostContent from "../../components/PostContent";
 import AuthCheck from "../../components/AuthCheck";
 import Heart from "../../components/HeartButton";
 import Link from "next/link";
+import CommentsSection from "../../components/CommentSection";
 
 export async function getStaticProps({ params }) {
     const { username, slug } = params;
@@ -59,25 +60,29 @@ export default function Post(props) {
     const post = realtimePost || props.post;
 
     return (
-        <main className={styles.container}>
-            <section>
-                <PostContent post={post} />
-            </section>
-
-            <aside className="card">
-                <p>
-                    <strong>{post.heartCount || 0} 💖</strong>
-                </p>
-                <AuthCheck
-                    fallback={
-                        <Link href="/enter">
-                            <button>💖 Sign Up</button>
-                        </Link>
-                    }
-                >
-                    <Heart postRef={postRef} />
-                </AuthCheck>
-            </aside>
-        </main>
+        <>
+            <main>
+                <div className={styles.container}>
+                    <section>
+                        <PostContent post={post} />
+                    </section>
+                    <aside className="card">
+                        <p>
+                            <strong>{post.heartCount || 0} 💖</strong>
+                        </p>
+                        <AuthCheck
+                            fallback={
+                                <Link href="/enter">
+                                    <button>💖 Sign Up</button>
+                                </Link>
+                            }
+                        >
+                            <Heart postRef={postRef} />
+                        </AuthCheck>
+                    </aside>
+                </div>
+                <CommentsSection />
+            </main>
+        </>
     );
 }
