@@ -73,6 +73,7 @@ export default function Home(props) {
 
     return (
         <main>
+            <h1>Because it's a SOCIAL media. Get it?</h1>
             <PostFeed posts={posts} />
 
             {!loading && !postsEnd && (
