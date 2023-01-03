@@ -31,9 +31,6 @@
 
 .controls textarea {
     height: 60vh;
-    border: none;
-    outline: none;
-    padding: 0.5rem;
     font-size: 1.25rem;
 }
 

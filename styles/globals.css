@@ -56,6 +56,12 @@ input {
     padding: 5px 10px;
 }
 
+textarea {
+    border: none;
+    outline: none;
+    padding: 0.5rem;
+}
+
 fieldset {
     border: none;
     padding: 1rem 0;
