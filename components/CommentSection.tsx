@@ -32,7 +32,7 @@ export default function CommentsSection(comments: DocumentData[]) {
             {commentsArray.length > 0 ? (
                 <>
                     {commentsArray.map((doc) => (
-                        <CommentCard />
+                        <CommentCard key={commentsArray.indexOf(doc)} content={doc.content} />
                     ))}
                 </>
             ) : (

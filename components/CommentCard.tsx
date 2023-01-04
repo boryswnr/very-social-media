@@ -1,7 +1,7 @@
-export default function CommentCard() {
+export default function CommentCard({ content }) {
     return (
         <div className="card">
-            <p>A comment</p>
+            <p>{content}</p>
         </div>
     );
 }
