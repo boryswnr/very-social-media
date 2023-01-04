@@ -1,8 +1,9 @@
+import { DocumentData } from "firebase/firestore";
 import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import styles from "../styles/CommentSection.module.css";
 
-export default function CommentsSection() {
+export default function CommentsSection(comments: DocumentData[]) {
     const {
         register,
         handleSubmit,
@@ -14,11 +15,20 @@ export default function CommentsSection() {
         mode: "onChange",
     });
 
+    console.log("comments:", comments);
+    // console.log("comments.length:", comments.length);
+    // console.log("typeof comments:", typeof comments);
+
     const addComment = async () => {};
 
     return (
         <div>
             <h3>Comments</h3>
+            {comments.length > 0 ? (
+                <p>Comments are here.</p>
+            ) : (
+                <p>No one commented yet.</p>
+            )}
             <form onSubmit={handleSubmit(addComment)}>
                 <textarea
                     className={styles.input}
