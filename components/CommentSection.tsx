@@ -2,6 +2,7 @@ import { DocumentData } from "firebase/firestore";
 import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import styles from "../styles/CommentSection.module.css";
+import CommentCard from "./CommentCard";
 
 export default function CommentsSection(comments: DocumentData[]) {
     const {
@@ -15,7 +16,11 @@ export default function CommentsSection(comments: DocumentData[]) {
         mode: "onChange",
     });
 
+    const commentsArray = Object.values(comments);
+
     console.log("comments:", comments);
+    console.log("commentsArray:", commentsArray);
+    // console.log("comments.keys:", Object.values(comments).length);
     // console.log("comments.length:", comments.length);
     // console.log("typeof comments:", typeof comments);
 
@@ -24,8 +29,12 @@ export default function CommentsSection(comments: DocumentData[]) {
     return (
         <div>
             <h3>Comments</h3>
-            {comments.length > 0 ? (
-                <p>Comments are here.</p>
+            {commentsArray.length > 0 ? (
+                <>
+                    {commentsArray.map((doc) => (
+                        <CommentCard />
+                    ))}
+                </>
             ) : (
                 <p>No one commented yet.</p>
             )}

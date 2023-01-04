@@ -1,3 +1,7 @@
 export default function CommentCard() {
-    return <div className="card">A comment</div>;
+    return (
+        <div className="card">
+            <p>A comment</p>
+        </div>
+    );
 }
