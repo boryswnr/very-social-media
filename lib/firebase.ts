@@ -50,6 +50,17 @@ export async function getUserWithUsername(username: string) {
     return userDoc;
 }
 
+export async function getUsernameWithUid(uid: string) {
+    const q = query(
+        collection(firestore, "usernames"),
+        where("uid", "==", uid),
+        limit(1)
+    );
+
+    const usernameDoc = (await getDocs(q)).docs[0];
+    return usernameDoc;
+}
+
 export function postToJSON(doc) {
     const data = doc.data();
     return {

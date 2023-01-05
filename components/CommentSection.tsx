@@ -18,8 +18,6 @@ export default function CommentsSection(comments: DocumentData[]) {
 
     const commentsArray = Object.values(comments);
 
-    console.log("comments:", comments);
-    console.log("commentsArray:", commentsArray);
     const addComment = async () => {};
 
     return (
@@ -31,14 +29,18 @@ export default function CommentsSection(comments: DocumentData[]) {
                         <CommentCard
                             key={commentsArray.indexOf(doc)}
                             content={doc.content}
+                            uid={doc.uid}
+                            createdAt={doc.createdAt}
                         />
                     ))}
                 </>
             ) : (
                 <p>No one commented yet.</p>
             )}
+            <h5>Add your comment.</h5>
             <form onSubmit={handleSubmit(addComment)}>
                 <textarea
+                    placeholder="What do you want to say?"
                     className={styles.input}
                     {...register("content", {
                         minLength: {
@@ -51,7 +53,7 @@ export default function CommentsSection(comments: DocumentData[]) {
                         },
                         required: {
                             value: true,
-                            message: "content is required",
+                            message: "you can't add empty comment",
                         },
                     })}
                 ></textarea>
