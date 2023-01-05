@@ -67,23 +67,13 @@ export default function Post(props: propsType) {
     const post = realtimePost || props.post;
 
     const commentsRef = collection(getFirestore(), props.path, "comments");
-    // console.log("*******************");
-    // console.log("commentsRef:", commentsRef);
-    // console.log("*******************");
 
     const commentsQuery = query(commentsRef);
-    // console.log("*******************");
-    // console.log("commentsQuery:", commentsQuery);
-    // console.log("*******************");
     const [querySnapshot] = useCollection(commentsQuery);
-    // console.log("*******************");
-    // console.log("querySnapshot:", querySnapshot);
-    // console.log("*******************");
 
     const comments = querySnapshot?.docs.map((doc) =>
         doc.data()
     ) as DocumentData[];
-    // console.log("comments:", comments);
 
     return (
         <>

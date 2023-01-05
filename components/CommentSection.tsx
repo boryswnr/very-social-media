@@ -20,10 +20,6 @@ export default function CommentsSection(comments: DocumentData[]) {
 
     console.log("comments:", comments);
     console.log("commentsArray:", commentsArray);
-    // console.log("comments.keys:", Object.values(comments).length);
-    // console.log("comments.length:", comments.length);
-    // console.log("typeof comments:", typeof comments);
-
     const addComment = async () => {};
 
     return (
@@ -32,7 +28,10 @@ export default function CommentsSection(comments: DocumentData[]) {
             {commentsArray.length > 0 ? (
                 <>
                     {commentsArray.map((doc) => (
-                        <CommentCard key={commentsArray.indexOf(doc)} content={doc.content} />
+                        <CommentCard
+                            key={commentsArray.indexOf(doc)}
+                            content={doc.content}
+                        />
                     ))}
                 </>
             ) : (
