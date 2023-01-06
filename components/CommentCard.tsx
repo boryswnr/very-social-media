@@ -26,9 +26,9 @@ export default function CommentCard({
 
     return (
         <div className="card">
-            <p>
+            <p className="text-sm">
                 Commented by <Link href={`/${username}`}>@{username}</Link> on{" "}
-                {dateString}
+                {dateString}:
             </p>
             <p>{content}</p>
         </div>

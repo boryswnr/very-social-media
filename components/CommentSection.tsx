@@ -1,10 +1,12 @@
-import { DocumentData } from "firebase/firestore";
-import { ReactNode } from "react";
+import { DocumentData, getFirestore } from "firebase/firestore";
+import { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
+import { auth } from "../lib/firebase";
 import styles from "../styles/CommentSection.module.css";
 import CommentCard from "./CommentCard";
 
 export default function CommentsSection(comments: DocumentData[]) {
+    const [comment, setComment] = useState("");
     const {
         register,
         handleSubmit,
@@ -18,7 +20,10 @@ export default function CommentsSection(comments: DocumentData[]) {
 
     const commentsArray = Object.values(comments);
 
-    const addComment = async () => {};
+    const addComment = async ({ content }: { content: string }) => {
+        const uid = auth.currentUser.uid;
+        const ref = doc(getFirestore(), "users", uid, "posts", slug);
+    };
 
     return (
         <div>
@@ -55,6 +60,7 @@ export default function CommentsSection(comments: DocumentData[]) {
                             value: true,
                             message: "you can't add empty comment",
                         },
+                        onChange: (e) => setComment(e.target.value),
                     })}
                 ></textarea>
                 {errors.content && (
@@ -66,4 +72,7 @@ export default function CommentsSection(comments: DocumentData[]) {
             </form>
         </div>
     );
+}
+function doc(arg0: any, arg1: string, uid: string, arg3: string, slug: any) {
+    throw new Error("Function not implemented.");
 }
