@@ -1,41 +1,67 @@
-import { DocumentData, getFirestore } from "firebase/firestore";
-import { ReactNode, useState } from "react";
-import { useForm } from "react-hook-form";
+import {
+    addDoc,
+    collection,
+    DocumentData,
+    getFirestore,
+    serverTimestamp,
+} from "firebase/firestore";
+import { ReactNode } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { auth } from "../lib/firebase";
 import styles from "../styles/CommentSection.module.css";
 import CommentCard from "./CommentCard";
 
-export default function CommentsSection(comments: DocumentData[]) {
-    const [comment, setComment] = useState("");
+export default function CommentsSection({
+    comments,
+    path,
+}: {
+    comments: DocumentData[];
+    path: string;
+}) {
     const {
         register,
         handleSubmit,
         reset,
-        watch,
         formState: { errors },
-        setError,
     } = useForm({
         mode: "onChange",
     });
+    const pathSplit = path.split("/");
+    const slug = pathSplit[pathSplit.length - 1];
 
-    const commentsArray = Object.values(comments);
-
-    const addComment = async ({ content }: { content: string }) => {
+    const addComment: SubmitHandler<FieldValues> = async ({ content }) => {
         const uid = auth.currentUser.uid;
-        const ref = doc(getFirestore(), "users", uid, "posts", slug);
+        const ref = collection(
+            getFirestore(),
+            "users",
+            uid,
+            "posts",
+            slug,
+            "comments"
+        );
+
+        const data = {
+            content,
+            uid,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+        };
+
+        await addDoc(ref, data);
+        reset({ content });
     };
 
     return (
         <div>
             <h3>Comments</h3>
-            {commentsArray.length > 0 ? (
+            {comments && comments.length > 0 ? (
                 <>
-                    {commentsArray.map((doc) => (
+                    {comments.map((item) => (
                         <CommentCard
-                            key={commentsArray.indexOf(doc)}
-                            content={doc.content}
-                            uid={doc.uid}
-                            createdAt={doc.createdAt}
+                            key={comments.indexOf(item)}
+                            content={item.content}
+                            uid={item.uid}
+                            createdAt={item.createdAt}
                         />
                     ))}
                 </>
@@ -60,7 +86,6 @@ export default function CommentsSection(comments: DocumentData[]) {
                             value: true,
                             message: "you can't add empty comment",
                         },
-                        onChange: (e) => setComment(e.target.value),
                     })}
                 ></textarea>
                 {errors.content && (
@@ -72,7 +97,4 @@ export default function CommentsSection(comments: DocumentData[]) {
             </form>
         </div>
     );
-}
-function doc(arg0: any, arg1: string, uid: string, arg3: string, slug: any) {
-    throw new Error("Function not implemented.");
 }

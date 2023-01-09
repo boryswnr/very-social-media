@@ -13,8 +13,9 @@ export default function CommentCard({
     createdAt: Timestamp;
 }) {
     const [username, setUsername] = useState("boilerplate");
-    const commentDate = createdAt.toDate();
-    const dateString = commentDate.toLocaleString();
+    const [dateStamp, setDateStamp] = useState("");
+    let commentDate: Date;
+    let dateString = "";
 
     useEffect(() => {
         async function updateUsername() {
@@ -22,13 +23,17 @@ export default function CommentCard({
             setUsername(u);
         }
         updateUsername();
-    }, []);
+        if (createdAt) {
+            commentDate = createdAt.toDate();
+            setDateStamp(commentDate.toLocaleString());
+        }
+    }, [createdAt]);
 
     return (
         <div className="card">
             <p className="text-sm">
                 Commented by <Link href={`/${username}`}>@{username}</Link> on{" "}
-                {dateString}:
+                {dateStamp}:
             </p>
             <p>{content}</p>
         </div>

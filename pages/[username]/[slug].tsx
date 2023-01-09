@@ -68,7 +68,7 @@ export default function Post(props: propsType) {
 
     const commentsRef = collection(getFirestore(), props.path, "comments");
 
-    const commentsQuery = query(commentsRef);
+    const commentsQuery = query(commentsRef, orderBy("createdAt"));
     const [querySnapshot] = useCollection(commentsQuery);
 
     const comments = querySnapshot?.docs.map((doc) =>
@@ -97,7 +97,7 @@ export default function Post(props: propsType) {
                         </AuthCheck>
                     </aside>
                 </div>
-                <CommentsSection {...comments} />
+                <CommentsSection comments={comments} path={props.path} />
             </main>
         </>
     );

@@ -6,13 +6,9 @@ import {
     serverTimestamp,
     updateDoc,
 } from "firebase/firestore";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactNode, useState } from "react";
-import {
-    useDocumentData,
-    useDocumentDataOnce,
-} from "react-firebase-hooks/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";

@@ -80,7 +80,7 @@ function CreateNewPost() {
 
         await setDoc(ref, data);
 
-        toast.success("Postt created!");
+        toast.success("Post created!");
 
         router.push(`/admin/${slug}`);
     };
