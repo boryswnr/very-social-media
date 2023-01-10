@@ -7,8 +7,10 @@ import {
     useState,
 } from "react";
 import { UserContext } from "../lib/context";
-import { auth, firestore, googleAuthProvider } from "../lib/firebase";
+import { auth, googleAuthProvider } from "../lib/firebase";
 import debounce from "lodash.debounce";
+import { doc, getDoc, getFirestore, writeBatch } from "firebase/firestore";
+import { signInWithPopup } from "firebase/auth";
 
 export default function EnterPage() {
     const { user, username } = useContext(UserContext);
@@ -33,7 +35,7 @@ export default function EnterPage() {
 
 function SignInButton() {
     const signInWithGoogle = async () => {
-        await auth.signInWithPopup(googleAuthProvider);
+        await signInWithPopup(auth, googleAuthProvider);
     };
 
     return (
@@ -76,11 +78,11 @@ function UsernameForm() {
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (user) {
-            const userDoc = firestore.doc(`users/${user.uid}`);
-            const usernameDoc = firestore.doc(`usernamesa/${formValue}`);
+        if (user && user.uid) {
+            const userDoc = doc(getFirestore(), "users", user.uid);
+            const usernameDoc = doc(getFirestore(), "usernames", formValue);
 
-            const batch = firestore.batch();
+            const batch = writeBatch(getFirestore());
             batch.set(userDoc, {
                 username: formValue,
                 photoURL: user.photoURL,
@@ -95,9 +97,9 @@ function UsernameForm() {
     const checkUsername = useCallback(
         debounce(async (username: string) => {
             if (username.length >= 3) {
-                const ref = firestore.doc(`usernames/${username}`);
-                const { exists } = await ref.get();
-                setIsValid(!exists);
+                const ref = doc(getFirestore(), `usernames`, username);
+                const snap = await getDoc(ref);
+                setIsValid(!snap.exists());
                 setLoading(false);
             }
         }, 500),
