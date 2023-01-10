@@ -14,7 +14,6 @@ export default function CommentCard({
 }) {
     const [username, setUsername] = useState("boilerplate");
     const [dateStamp, setDateStamp] = useState("");
-    let commentDate: Date;
     let dateString = "";
 
     useEffect(() => {
@@ -24,7 +23,7 @@ export default function CommentCard({
         }
         updateUsername();
         if (createdAt) {
-            commentDate = createdAt.toDate();
+            let commentDate = createdAt.toDate();
             setDateStamp(commentDate.toLocaleString());
         }
     }, [createdAt]);

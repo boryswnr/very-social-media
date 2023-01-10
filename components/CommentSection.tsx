@@ -5,10 +5,12 @@ import {
     getFirestore,
     serverTimestamp,
 } from "firebase/firestore";
+import Link from "next/link";
 import { ReactNode } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { auth } from "../lib/firebase";
 import styles from "../styles/CommentSection.module.css";
+import AuthCheck from "./AuthCheck";
 import CommentCard from "./CommentCard";
 
 export default function CommentsSection({
@@ -68,33 +70,41 @@ export default function CommentsSection({
             ) : (
                 <p>No one commented yet.</p>
             )}
-            <h5>Add your comment.</h5>
-            <form onSubmit={handleSubmit(addComment)}>
-                <textarea
-                    placeholder="What do you want to say?"
-                    className={styles.input}
-                    {...register("content", {
-                        minLength: {
-                            value: 10,
-                            message: "content is too short",
-                        },
-                        maxLength: {
-                            value: 1600,
-                            message: "content is too long",
-                        },
-                        required: {
-                            value: true,
-                            message: "you can't add empty comment",
-                        },
-                    })}
-                ></textarea>
-                {errors.content && (
-                    <p className="text-danger">
-                        {errors.content.message as ReactNode}
-                    </p>
-                )}
-                <button>Add</button>
-            </form>
+            <AuthCheck
+                fallback={
+                    <Link href="/enter">
+                        <button>Sign Up to comment</button>
+                    </Link>
+                }
+            >
+                <h5>Add your comment.</h5>
+                <form onSubmit={handleSubmit(addComment)}>
+                    <textarea
+                        placeholder="What do you want to say?"
+                        className={styles.input}
+                        {...register("content", {
+                            minLength: {
+                                value: 10,
+                                message: "content is too short",
+                            },
+                            maxLength: {
+                                value: 1600,
+                                message: "content is too long",
+                            },
+                            required: {
+                                value: true,
+                                message: "you can't add empty comment",
+                            },
+                        })}
+                    ></textarea>
+                    {errors.content && (
+                        <p className="text-danger">
+                            {errors.content.message as ReactNode}
+                        </p>
+                    )}
+                    <button>Add</button>
+                </form>
+            </AuthCheck>
         </div>
     );
 }
