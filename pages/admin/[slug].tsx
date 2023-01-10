@@ -117,7 +117,6 @@ function PostForm({ defaultValues, postRef, preview }) {
         reset,
         watch,
         formState: { errors },
-        setError,
     } = useForm({
         defaultValues,
         mode: "onChange",

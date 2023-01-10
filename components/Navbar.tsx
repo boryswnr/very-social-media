@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
@@ -28,12 +29,15 @@ export default function Navbar() {
                         </li>
                         <li>
                             <Link href={`/${username}`}>
-                                <img
+                                <Image
                                     src={
                                         user?.photoURL
                                             ? user?.photoURL
                                             : blankAvatarUrl
                                     }
+                                    alt="avatar of a logged in user"
+                                    width={40}
+                                    height={40}
                                 />
                             </Link>
                         </li>

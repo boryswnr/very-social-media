@@ -11,6 +11,7 @@ import { auth, googleAuthProvider } from "../lib/firebase";
 import debounce from "lodash.debounce";
 import { doc, getDoc, getFirestore, writeBatch } from "firebase/firestore";
 import { signInWithPopup } from "firebase/auth";
+import Image from "next/image";
 
 export default function EnterPage() {
     const { user, username } = useContext(UserContext);
@@ -40,7 +41,13 @@ function SignInButton() {
 
     return (
         <button className="btn-google" onClick={signInWithGoogle}>
-            <img src="/google-logo.png" /> Sign in with Google
+            <Image
+                src="/google-logo.png"
+                alt="google logo"
+                width={30}
+                height={30}
+            />{" "}
+            Sign in with Google
         </button>
     );
 }
