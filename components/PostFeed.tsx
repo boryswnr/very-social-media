@@ -1,3 +1,4 @@
+import { DocumentData } from "firebase/firestore";
 import Link from "next/link";
 import React from "react";
 
@@ -5,7 +6,7 @@ export default function PostFeed({
     posts,
     admin,
 }: {
-    posts: any[];
+    posts: DocumentData[];
     admin?: boolean;
 }) {
     return posts ? (
@@ -19,7 +20,13 @@ export default function PostFeed({
     );
 }
 
-function PostItem({ post, admin }) {
+function PostItem({
+    post,
+    admin = false,
+}: {
+    post: DocumentData;
+    admin?: boolean;
+}) {
     const wordCount = post?.content.trim().split(/\s+/g).length;
     const minutesToRead = (wordCount / 100 + 1).toFixed(0);
 

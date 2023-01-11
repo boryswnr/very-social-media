@@ -1,7 +1,13 @@
 import Image from "next/image";
 import React from "react";
 
-export default function UserProfile({ user }) {
+type UserType = {
+    displayName: string;
+    photoURL: string;
+    username: string;
+};
+
+export default function UserProfile({ user }: { user: UserType }) {
     return (
         <div className="box-center">
             <Image

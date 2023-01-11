@@ -1,8 +1,11 @@
 import Link from "next/link";
-import { useContext } from "react";
+import { ReactElement, useContext } from "react";
 import { UserContext } from "../lib/context";
 
-export default function AuthCheck(props) {
+export default function AuthCheck(props: {
+    children: ReactElement[];
+    fallback?: any;
+}) {
     const { username } = useContext(UserContext);
 
     return username

@@ -1,8 +1,19 @@
-import { doc, getFirestore, increment, writeBatch } from "firebase/firestore";
+import {
+    doc,
+    getFirestore,
+    increment,
+    writeBatch,
+    DocumentReference,
+    DocumentData,
+} from "firebase/firestore";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { auth } from "../lib/firebase";
 
-export default function Heart({ postRef }) {
+type postRefType = {
+    postRef: DocumentReference<DocumentData>;
+};
+
+export default function Heart({ postRef }: postRefType) {
     const heartRef = doc(
         getFirestore(),
         postRef.path,

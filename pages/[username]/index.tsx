@@ -6,6 +6,7 @@ import {
     limit,
     orderBy,
     where,
+    DocumentData,
 } from "firebase/firestore";
 import PostFeed from "../../components/PostFeed";
 import UserProfile from "../../components/UserProfile";
@@ -17,7 +18,7 @@ export async function getServerSideProps({ query: urlQuery }) {
     const userDoc = await getUserWithUsername(username);
 
     let user: object = {};
-    let posts: any[] = [];
+    let posts: DocumentData[] = [];
 
     if (userDoc) {
         user = userDoc.data();

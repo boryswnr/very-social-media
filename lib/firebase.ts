@@ -1,7 +1,3 @@
-// import firebase from "firebase/compat/app";
-// import "firebase/compat/auth";
-// import "firebase/compat/firestore";
-// import "firebase/compat/storage";
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import {
@@ -11,6 +7,7 @@ import {
     getDocs,
     query,
     limit,
+    DocumentSnapshot,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -24,7 +21,17 @@ const firebaseConfig = {
     measurementId: "G-Y6DDHB2P8V",
 };
 
-function createFirebaseApp(config) {
+type configTypes = {
+    apiKey: string;
+    authDomain: string;
+    projectId: string;
+    storageBucket: string;
+    messagingSenderId: string;
+    appId: string;
+    measurementId: string;
+};
+
+function createFirebaseApp(config: configTypes) {
     try {
         return getApp();
     } catch {
@@ -61,7 +68,7 @@ export async function getUsernameWithUid(uid: string) {
     return usernameDoc;
 }
 
-export function postToJSON(doc) {
+export function postToJSON(doc: DocumentSnapshot) {
     const data = doc.data();
     return {
         ...data,
