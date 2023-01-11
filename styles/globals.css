@@ -254,6 +254,7 @@ input[type="file"] {
     background: white;
     padding: 5px;
     margin: 5px 0;
+    color: black;
 }
 /* Utilities */
 
