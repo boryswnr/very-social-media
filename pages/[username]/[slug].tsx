@@ -20,7 +20,14 @@ import Link from "next/link";
 import CommentsSection from "../../components/CommentSection";
 import { useState } from "react";
 
-export async function getStaticProps({ params }) {
+type ParamsType = {
+    params: {
+        username: string;
+        slug: string;
+    };
+};
+
+export async function getStaticProps({ params }: ParamsType) {
     const { username, slug } = params;
     const userDoc = await getUserWithUsername(username);
 

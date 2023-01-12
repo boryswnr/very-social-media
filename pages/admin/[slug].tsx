@@ -2,6 +2,7 @@ import {
     deleteDoc,
     doc,
     DocumentData,
+    DocumentReference,
     getFirestore,
     serverTimestamp,
     updateDoc,
@@ -110,7 +111,15 @@ function PostManager() {
     );
 }
 
-function PostForm({ defaultValues, postRef, preview }) {
+function PostForm({
+    defaultValues,
+    postRef,
+    preview,
+}: {
+    defaultValues: DocumentData;
+    postRef: DocumentReference<DocumentData>;
+    preview: boolean;
+}) {
     const {
         register,
         handleSubmit,
@@ -122,7 +131,7 @@ function PostForm({ defaultValues, postRef, preview }) {
         mode: "onChange",
     });
 
-    const updatePost = async ({ content, published }) => {
+    const updatePost = async ({ content, published }: DocumentData) => {
         await updateDoc(postRef, {
             content,
             published,

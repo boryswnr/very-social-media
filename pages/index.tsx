@@ -1,8 +1,4 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import toast from "react-hot-toast";
-import { firestore, postToJSON } from "../lib/firebase";
+import { postToJSON } from "../lib/firebase";
 import {
     Timestamp,
     query,
@@ -13,14 +9,20 @@ import {
     getDocs,
     startAfter,
     getFirestore,
+    DocumentData,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PostFeed from "../components/PostFeed";
 import Loader from "../components/Loader";
+import { GetServerSideProps } from "next";
 
 const LIMIT = 10;
 
-export async function getServerSideProps(context) {
+type DATA = DocumentData[];
+
+export const getServerSideProps: GetServerSideProps<{ posts: DATA }> = async (
+    context
+) => {
     const ref = collectionGroup(getFirestore(), "posts");
     const postsQuery = query(
         ref,
@@ -34,9 +36,9 @@ export async function getServerSideProps(context) {
     return {
         props: { posts },
     };
-}
+};
 
-export default function Home(props) {
+export default function Home(props: { posts: DATA }) {
     const [posts, setPosts] = useState(props.posts);
     const [loading, setLoading] = useState(false);
     const [postsEnd, setPostsEnd] = useState(false);

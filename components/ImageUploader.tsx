@@ -1,5 +1,5 @@
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { FormEvent, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { auth, STATE_CHANGED, storage } from "../lib/firebase";
 import Loader from "./Loader";
 
@@ -12,10 +12,11 @@ export default function ImageUploader() {
     const [progress, setProgress] = useState(0);
     const [downloadURL, setDownloadURL] = useState("");
 
-    const uploadFile = async (e: React.ChangeEvent<HTMLInputEvent>) => {
+    // TODO: fix the type of e
+    const uploadFile = async (e: any) => {
         console.log("e:", e);
 
-        const file = Array.from(e.target.files)[0] as Blob;
+        const file = Array.from(e.target.files as FileList)[0] as Blob;
         const extension = file.type.split("/")[1];
         const fileRef = ref(
             storage,

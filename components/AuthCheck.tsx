@@ -3,7 +3,7 @@ import { ReactElement, useContext } from "react";
 import { UserContext } from "../lib/context";
 
 export default function AuthCheck(props: {
-    children: ReactElement[];
+    children: ReactElement[] | ReactElement;
     fallback?: any;
 }) {
     const { username } = useContext(UserContext);

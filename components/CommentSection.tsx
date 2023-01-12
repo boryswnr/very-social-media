@@ -23,7 +23,7 @@ export default function CommentsSection({
     const {
         register,
         handleSubmit,
-        reset,
+        resetField,
         formState: { errors },
     } = useForm({
         mode: "onChange",
@@ -50,7 +50,7 @@ export default function CommentsSection({
         };
 
         await addDoc(ref, data);
-        reset({ content });
+        resetField("content");
     };
 
     return (
