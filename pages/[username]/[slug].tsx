@@ -18,7 +18,6 @@ import AuthCheck from "../../components/AuthCheck";
 import Heart from "../../components/HeartButton";
 import Link from "next/link";
 import CommentsSection from "../../components/CommentSection";
-import { useState } from "react";
 
 type ParamsType = {
     params: {
@@ -69,7 +68,6 @@ type propsType = { post: DocumentData; path: string };
 export default function Post(props: propsType) {
     const postRef = doc(getFirestore(), props.path);
     const [realtimePost] = useDocumentData(postRef);
-    const [commentsAvailable, setCommentsAvailable] = useState(false);
 
     const post = realtimePost || props.post;
 

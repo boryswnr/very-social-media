@@ -28,29 +28,34 @@ export default function CommentsSection({
     } = useForm({
         mode: "onChange",
     });
+
+    // potentially TODO: get an actual postRef here. Then again, this works
     const pathSplit = path.split("/");
-    const slug = pathSplit[pathSplit.length - 1];
+    const postSlug = pathSplit[pathSplit.length - 1];
+    const authorSlug = pathSplit[1];
 
     const addComment: SubmitHandler<FieldValues> = async ({ content }) => {
-        const uid = auth.currentUser.uid;
-        const ref = collection(
-            getFirestore(),
-            "users",
-            uid,
-            "posts",
-            slug,
-            "comments"
-        );
+        if (auth.currentUser) {
+            const uid = auth.currentUser.uid;
+            const ref = collection(
+                getFirestore(),
+                "users",
+                authorSlug,
+                "posts",
+                postSlug,
+                "comments"
+            );
 
-        const data = {
-            content,
-            uid,
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-        };
+            const data = {
+                content,
+                uid,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp(),
+            };
 
-        await addDoc(ref, data);
-        resetField("content");
+            await addDoc(ref, data);
+            resetField("content");
+        }
     };
 
     return (
