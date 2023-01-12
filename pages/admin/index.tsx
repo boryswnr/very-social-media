@@ -31,12 +31,11 @@ export default function AdminPostPage({}) {
 }
 
 function PostList() {
-    const ref = collection(
-        getFirestore(),
-        "users",
-        auth.currentUser.uid,
-        "posts"
-    );
+    let userId = "null";
+    if (auth.currentUser) {
+        userId = auth.currentUser.uid;
+    }
+    const ref = collection(getFirestore(), "users", userId, "posts");
     const postQuery = query(ref, orderBy("createdAt"));
 
     const [querySnapshot] = useCollection(postQuery);
@@ -57,13 +56,17 @@ function CreateNewPost() {
     const router = useRouter();
     const { username } = useContext(UserContext);
     const [title, setTitle] = useState("");
+    let userId = "null";
+    if (auth.currentUser) {
+        userId = auth.currentUser.uid;
+    }
 
     const slug = encodeURI(kebabCase(title));
     const isValid = title.length > 3 && title.length < 100;
 
     const createPost = async (e: FormEvent) => {
         e.preventDefault();
-        const uid = auth.currentUser.uid;
+        const uid = userId;
         const ref = doc(getFirestore(), "users", uid, "posts", slug);
 
         const data = {

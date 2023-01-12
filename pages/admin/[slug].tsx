@@ -36,11 +36,14 @@ function PostManager() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const { slug } = router.query;
-
+    let userId = "null";
+    if (auth.currentUser) {
+        userId = auth.currentUser.uid;
+    }
     const postRef = doc(
         getFirestore(),
         "users",
-        auth.currentUser.uid,
+        userId,
         "posts",
         slug as string
     );

@@ -11,16 +11,18 @@ export default function ImageUploader() {
     const [uploading, setUploading] = useState(false);
     const [progress, setProgress] = useState(0);
     const [downloadURL, setDownloadURL] = useState("");
+    let userId = "null";
+    if (auth.currentUser) {
+        userId = auth.currentUser.uid;
+    }
 
     // TODO: fix the type of e
     const uploadFile = async (e: any) => {
-        console.log("e:", e);
-
         const file = Array.from(e.target.files as FileList)[0] as Blob;
         const extension = file.type.split("/")[1];
         const fileRef = ref(
             storage,
-            `uploads/${auth.currentUser.uid}/${Date.now()}.${extension}`
+            `uploads/${userId}/${Date.now()}.${extension}`
         );
         setUploading(true);
 

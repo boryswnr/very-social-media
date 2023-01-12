@@ -14,17 +14,17 @@ type postRefType = {
 };
 
 export default function Heart({ postRef }: postRefType) {
-    const heartRef = doc(
-        getFirestore(),
-        postRef.path,
-        "hearts",
-        auth.currentUser.uid
-    );
+    let userId = "null";
+    if (auth.currentUser) {
+        userId = auth.currentUser.uid;
+    }
+
+    const heartRef = doc(getFirestore(), postRef.path, "hearts", userId);
 
     const [heartDoc] = useDocument(heartRef);
 
     const addHeart = async () => {
-        const uid = auth.currentUser.uid;
+        const uid = userId;
         const batch = writeBatch(getFirestore());
 
         batch.update(postRef, { heartCount: increment(1) });
