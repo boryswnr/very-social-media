@@ -14,7 +14,7 @@ export default function PostContent({ post }: { post: DocumentData }) {
             <span className="text-sm">
                 Written by{" "}
                 <Link href={`/${post.username}`}>@{post.username}</Link> on{" "}
-                {createdAt.toISOString()}
+                {createdAt.toLocaleString()}
             </span>
             <ReactMarkdown>{post?.content}</ReactMarkdown>
         </div>
