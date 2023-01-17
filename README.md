@@ -1,4 +1,4 @@
-# Social media app
+# Social media app - [live here](https://collective-social-media-boryswnr.vercel.app/)
 
 ## project inspired by medium.com
 
